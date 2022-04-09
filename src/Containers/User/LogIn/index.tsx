@@ -4,12 +4,12 @@ import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import { Link, useNavigate } from 'react-router-dom'
 import { login, success } from '../actions';
-import Carousel from "../../../Components/Carousel";
-import Input from "../../../Components/Input";
-import CustomButton from "../../../Components/Button";
+import Carousel from "../../../components/Carousel";
+import Input from "../../../components/Input";
+import CustomButton from "../../../components/Button";
 import { UserType } from '../../../globalTypes';
 import { makeSelectLoading, makeSelectLoginFail, makeSelectSuccess } from '../selectors';
-import Spinner from '../../../Components/Spinner';
+import Spinner from '../../../components/Spinner';
 
 
 const mapStateToProps = createStructuredSelector({
@@ -47,7 +47,7 @@ const SignUp: React.FC<SignUpProps> = ({ loading, loginFail, success, handleLogi
   const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setIsSubmited(true);
-    if (user.username && user.username.length > 5 && regExpPassword.test(user.password)) {
+    if (user.username && user.username.length > 5 && regExpPassword.test(user.password || "")) {
       handleLogin(user)
     }
   }

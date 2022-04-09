@@ -5,11 +5,11 @@ import { Link, useNavigate } from 'react-router-dom'
 import { createStructuredSelector } from 'reselect';
 import { register, success } from '../actions';
 import { makeSelectLoading, makeSelectRegisterFail, makeSelectSuccess } from '../selectors';
-import Carousel from "../../../Components/Carousel";
-import Input from "../../../Components/Input";
-import CustomButton from "../../../Components/Button";
+import Carousel from "../../../components/Carousel";
+import Input from "../../../components/Input";
+import CustomButton from "../../../components/Button";
 import { UserType } from '../../../globalTypes';
-import Spinner from '../../../Components/Spinner';
+import Spinner from '../../../components/Spinner';
 
 
 const SignUp: React.FC<SignUpProps> = ({ loading, registerFail, success, handleRegister, handleSuccess }) => {
@@ -29,7 +29,7 @@ const SignUp: React.FC<SignUpProps> = ({ loading, registerFail, success, handleR
   const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setIsSubmited(true);
-    if (user.name && user.name.length > 4 && user.username && user.username.length > 5 && regExpPassword.test(user.password)) {
+    if (user.name && user.name.length > 4 && user.username && user.username.length > 5 && regExpPassword.test(user.password || "")) {
       handleRegister(user)
     }
   }

@@ -2,15 +2,14 @@ import { Dispatch, useEffect, useState } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
-import Modal from "../../../Components/Modal";
-import { makeSelectLoading } from '../selectors';
+import Modal from "../../../components/Modal";
+import { makeSelectLoading, makeSelectPlacesTypes } from '../selectors';
 import { getPlacesTypes, createPlace } from '../actions';
-import { makeSelectPlacesTypes } from '../selectors';
 import { PlaceType } from '../../../globalTypes';
-import Spinner from '../../../Components/Spinner';
-import Button from '../../../Components/Button';
-import Input from '../../../Components/Input';
-import DataList from '../../../Components/DataList';
+import Spinner from '../../../components/Spinner';
+import Button from '../../../components/Button';
+import Input from '../../../components/Input';
+import DataList from '../../../components/DataList';
 
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
@@ -44,8 +43,10 @@ type Props = CreatePlaceReduxProps & CreatePlaceProps;
 const CreatePlace = ({ handleCreatePlace, handleGetPlacesTypes, placesTypes, loading, open, setOpen, location }: Props) => {
 
   useEffect(() => {
-    handleGetPlacesTypes();
-  }, [])
+    if (placesTypes.length === 0) {
+      handleGetPlacesTypes();
+    }
+  }, [placesTypes, handleGetPlacesTypes]);
 
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')

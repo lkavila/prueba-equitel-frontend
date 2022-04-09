@@ -1,6 +1,6 @@
 import { createSelector } from "reselect";
 import initialState from "./reducer";
-import { PlaceType, PlaceTypesType } from "../../globalTypes";
+import { PlaceType, PlaceTypesType, ReviewType } from "../../globalTypes";
 
 
 const placeDomain = (state: { placeReducer: any }) => state.placeReducer || initialState;
@@ -27,4 +27,10 @@ export const makeSelectPlacesTypes = () =>
   createSelector(
     placeDomain,
     (substate: { placesTypes: PlaceTypesType[] }) => substate.placesTypes
+  );
+
+export const makeSelectReviews = () =>
+  createSelector(
+    placeDomain,
+    (substate: { reviews: ReviewType[] }) => substate.reviews
   );
