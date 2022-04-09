@@ -2,16 +2,17 @@ import React, { Dispatch, useState, useEffect } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
-import { useLocation, useNavigate } from 'react-router-dom'
 import { compose } from 'redux';
 import { makeSelectPlaces } from './selectors';
 import { startChannel } from './actions';
-import Spinner from '../../Components/Spinner';
+import { PlaceType } from '../../globalTypes';
+import Spinner from '../../components/Spinner';
 import CreatePlace from '../Place/CreatePlace';
+import PlaceView from '../Place/PlaceAndReview';
 
-const containerStyle = {
+const mapContainerStyle = {
+  height: '100vh',
   width: '100%',
-  height: '100vh'
 };
 
 const center = {
@@ -43,46 +44,66 @@ const Map: React.FC<MapProps> = ({ places, handleGetPlaces }) => {
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API || "",
   })
 
-  const [open, setOpen] = useState(false);
+  const [place, setPlace] = useState<any>();
+  const [openCreatePlace, setOpenCreatePlace] = useState(false);
+  const [openViewPlace, setOpenViewPlace] = useState(false);
   const [currentLocation, setCurrentLocation] = useState(center);
-  const location = useLocation();
-  const navigate = useNavigate();
 
-  useEffect(() => handleGetPlaces(), []);
+  useEffect(() => {
+    if (places.length === 0)
+      handleGetPlaces()
+  }, [places, handleGetPlaces]);
 
-  const openModal = (latLng: any) => {
+  const openCreatePlaceModal = (latLng: any) => {
     const auxLocation = {
       lat: latLng.lat(),
       lng: latLng.lng()
     }
     setCurrentLocation(auxLocation);
-    setOpen(true);
+    setOpenCreatePlace(true);
+  }
+
+  const openViewPlaceModal = (place: PlaceType) => {
+    setPlace(place);
+    setOpenViewPlace(true);
   }
   const RenderMap = () => {
 
     return (
       <div>
-        <CreatePlace open={open} setOpen={setOpen} location={currentLocation} />
+        {openCreatePlace ?
+          <CreatePlace open={openCreatePlace} setOpen={setOpenCreatePlace} location={currentLocation} />
+          : <></>
+        }
+        {openViewPlace ?
+          <PlaceView open={openViewPlace} setOpen={setOpenViewPlace} place={place} />
+          : <></>
+        }
 
         <GoogleMap
-          mapContainerStyle={containerStyle}
+          mapContainerStyle={mapContainerStyle}
           center={center}
           zoom={10}
-          onClick={(mouseEvent) => openModal(mouseEvent.latLng)}
+          onClick={(mouseEvent) => openCreatePlaceModal(mouseEvent.latLng)}
         //onLoad={onLoad}
         >
           {
-            places?.map((place: any, index: number) => {
+            places?.map((place: PlaceType, index: number) => {
               return <Marker
                 key={index}
                 position={{
                   lat: Number(place.location.coordinates[1]),
                   lng: Number(place.location.coordinates[0])
                 }}
-                label={place.name}
-                onClick={() =>
-                  navigate(`/place/${place._id}`, { state: { backgroundLocation: location } })
-                }
+                label={{
+                  text: place.name,
+                  color: 'black',
+                  fontSize: '20px',
+                  fontWeight: 'bold',
+                  className: 'text-center mb-10'
+                }}
+                title={place.name}
+                onClick={() => openViewPlaceModal(place)}
               />
             }
             )

@@ -1,23 +1,26 @@
 import produce from 'immer';
+import { PlaceType } from '../../globalTypes';
+import mapActionsTypes from './constants';
 
-import mapConstans from './constants';
-
+interface MapReducerActionsProps {
+  type: string;
+  payload: PlaceType[];
+}
 export const initialState = {
-  places: [],
+  places: [] as PlaceType[],
   channelStatus: 'off',
 };
 
-const mapReducer = (state = initialState, action: any) =>
+const mapReducer = (state = initialState, action: MapReducerActionsProps) =>
   produce(state, draft => {
     switch (action.type) {
-      case mapConstans.GET_PLACES_SUCCESS:
-        console.log(action.payload)
+      case mapActionsTypes.GET_PLACES_SUCCESS:
         draft.places = action.payload;
         break;
-      case mapConstans.CHANNEL_OFF:
+      case mapActionsTypes.CHANNEL_OFF:
         draft.channelStatus = 'off';
         break;
-      case mapConstans.CHANNEL_ON:
+      case mapActionsTypes.CHANNEL_ON:
         draft.channelStatus = 'on';
         break;
       default:
