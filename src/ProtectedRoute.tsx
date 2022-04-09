@@ -1,7 +1,7 @@
 import { Navigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import { useSelector } from 'react-redux';
-import { makeSelectUser } from "./Containers/User/selectors"
+import { makeSelectUser } from "./containers/User/selectors"
 import React from "react";
 
 interface ProtectedRouteTypes {

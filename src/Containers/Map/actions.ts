@@ -1,38 +1,39 @@
-import mapConstans from './constants';
+import { PlaceType } from '../../globalTypes';
+import mapActionsTypes from './constants';
 
 export const getPlaces = () => {
   return {
-    type: mapConstans.GET_PLACES,
+    type: mapActionsTypes.GET_PLACES,
   };
 };
 
-export const getPlacesSuccess = (payload: any) => {
+export const getPlacesSuccess = (payload: PlaceType[]) => {
   return {
-    type: mapConstans.GET_PLACES_SUCCESS,
+    type: mapActionsTypes.GET_PLACES_SUCCESS,
     payload
   };
 };
 
 export const channelOff = () => {
   return {
-    type: mapConstans.CHANNEL_OFF,
+    type: mapActionsTypes.CHANNEL_OFF,
   };
 };
 
 export const channelOn = () => {
   return {
-    type: mapConstans.CHANNEL_ON,
+    type: mapActionsTypes.CHANNEL_ON,
   };
 };
 
 export const stopChannel = () => {
   return {
-    type: mapConstans.STOP_CHANNEL,
+    type: mapActionsTypes.STOP_CHANNEL,
   };
 };
 
 export const startChannel = () => {
   return {
-    type: mapConstans.START_CHANNEL,
+    type: mapActionsTypes.START_CHANNEL,
   };
 };

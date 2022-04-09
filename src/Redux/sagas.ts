@@ -1,7 +1,7 @@
 import { all } from 'redux-saga/effects';
-import { userSagas } from "../Containers/User/saga"
-import { mapSagas } from '../Containers/Map/saga';
-import { placeSagas } from '../Containers/Place/saga';
+import { userSagas } from "../containers/User/saga"
+import { mapSagas } from '../containers/Map/saga';
+import { placeSagas } from '../containers/Place/saga';
 
 const superSagas = [...userSagas, ...placeSagas, ...mapSagas];
 

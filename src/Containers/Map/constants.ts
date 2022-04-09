@@ -1,4 +1,4 @@
-const mapConstans = {
+const mapActionsTypes = {
   GET_PLACES: 'Prueba-equitel/Map/GET_PLACES',
   GET_PLACES_SUCCESS: 'Prueba-equitel/Map/GET_PLACES_SUCCESS',
   START_CHANNEL: 'Prueba-equitel/Map/START_CHANNEL',
@@ -7,4 +7,4 @@ const mapConstans = {
   CHANNEL_OFF: 'Prueba-equitel/Map/CHANNEL_OFF',
 }
 
-export default mapConstans;
+export default mapActionsTypes;
