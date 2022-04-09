@@ -12,7 +12,10 @@ export interface PlaceTypesType {
 export interface ReviewType {
   _id?: string;
   placeId?: string;
-  username: string;
+  user: {
+    _id: string;
+    username: string;
+  }
   comment?: string;
   rating: number;
   createdAt?: Date;
