@@ -4,11 +4,13 @@ import { createStructuredSelector } from 'reselect';
 import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
 import { compose } from 'redux';
 import { makeSelectPlaces } from './selectors';
+import { makeSelectUser } from '../User/selectors';
 import { startChannel } from './actions';
 import { PlaceType } from '../../globalTypes';
 import Spinner from '../../components/Spinner';
 import CreatePlace from '../Place/CreatePlace';
 import PlaceView from '../Place/PlaceAndReview';
+import Button from '../../components/Button';
 
 const mapContainerStyle = {
   height: '100vh',
@@ -23,6 +25,7 @@ const center = {
 const mapStateToProps = createStructuredSelector(
   {
     places: makeSelectPlaces(),
+    user: makeSelectUser()
   }
 );
 
@@ -37,13 +40,12 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type MapProps = ConnectedProps<typeof connector>;
 
-const Map: React.FC<MapProps> = ({ places, handleGetPlaces }) => {
+const Map: React.FC<MapProps> = ({ user, places, handleGetPlaces }) => {
 
   const { isLoaded, loadError } = useJsApiLoader({
     id: 'google-map-script',
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API || "",
   })
-
   const [place, setPlace] = useState<any>();
   const [openCreatePlace, setOpenCreatePlace] = useState(false);
   const [openViewPlace, setOpenViewPlace] = useState(false);
@@ -67,6 +69,13 @@ const Map: React.FC<MapProps> = ({ places, handleGetPlaces }) => {
     setPlace(place);
     setOpenViewPlace(true);
   }
+
+  const handleLogOut = () => {
+    localStorage.removeItem('redux-user');
+    window.location.reload();
+
+    //navigate("/auth/login", { replace: true });
+  }
   const RenderMap = () => {
 
     return (
@@ -79,6 +88,10 @@ const Map: React.FC<MapProps> = ({ places, handleGetPlaces }) => {
           <PlaceView open={openViewPlace} setOpen={setOpenViewPlace} place={place} />
           : <></>
         }
+
+        <div className='fixed z-10 bottom-0'>
+          <Button onClick={handleLogOut} className="bg-verde2">Log out user {user.username}</Button>
+        </div>
 
         <GoogleMap
           mapContainerStyle={mapContainerStyle}
