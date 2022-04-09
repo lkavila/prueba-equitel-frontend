@@ -10,7 +10,7 @@ interface Props {
 
 const ReviewComponent = ({ username, comment, rating, createdAt }: Props) => {
   return (
-    <div id="review-container" key={`review-container ${username}`} className="container flex flex-row border-t border-r border-l border-grey-textTwitter border-opacity-25 px-2 py-2 max-w-screen-sm hover:bg-grey-lighter cursor-pointer">
+    <div id="review-container" className="container flex flex-row border-t border-r border-l border-grey-textTwitter border-opacity-25 px-2 py-2 max-w-screen-sm hover:bg-grey-lighter">
 
       <div id="avatar" className="min-w-max w-16 mr-2">
         <Avatar />
