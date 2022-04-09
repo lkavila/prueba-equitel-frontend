@@ -1,7 +1,7 @@
 export interface UserType {
   name?: string;
   username: string;
-  password: string;
+  password?: string;
 }
 
 export interface PlaceTypesType {
@@ -9,10 +9,19 @@ export interface PlaceTypesType {
   name: string;
 }
 
+export interface ReviewType {
+  _id?: string;
+  placeId?: string;
+  username: string;
+  comment?: string;
+  rating: number;
+  createdAt?: Date;
+}
 export interface PlaceType {
+  _id?: string;
   name: string;
   description?: string;
-  userId: string;
+  userId?: string;
   typeName?: string;
   type?: PlaceTypesType;
   location: {
