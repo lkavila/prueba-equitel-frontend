@@ -62,7 +62,10 @@ const Place = ({ handleCreateReview, handleGetReviews, reviews, loading, open, s
       comment: reviewComment,
       rating: rating,
       placeId: place._id,
-      username: "",
+      user: {
+        username: '',
+        _id: '',
+      },
     }
     handleCreateReview(review);
   }
@@ -76,7 +79,7 @@ const Place = ({ handleCreateReview, handleGetReviews, reviews, loading, open, s
 
           <div>
             <h1 className='text-3xl font-semibold'>{place.name}</h1>
-            <p className=' mb-4'>{place.type?.name}</p>
+            <p className=' mb-4'>{place.type?.name} - Average rating {place.averageRating}</p>
             <p>
               {place.description}
             </p>
@@ -107,16 +110,20 @@ const Place = ({ handleCreateReview, handleGetReviews, reviews, loading, open, s
 
         <div className='mt-4'>
           <h3 className='text-xl font-semibold mb-4'>Reviews</h3>
-          {
-            reviews.map((review) => (
-              <ReviewComponent
-                username={review.username}
-                comment={review.comment || ""}
-                rating={review.rating}
-                createdAt={review.createdAt || new Date()}
-              />
-            ))
-          }
+          <ul>
+            {
+              reviews.map((review, index) => (
+                <li key={(review._id || review.user.username) + index}>
+                  <ReviewComponent
+                    username={review.user.username}
+                    comment={review.comment || ""}
+                    rating={review.rating}
+                    createdAt={review.createdAt || new Date()}
+                  />
+                </li>
+              ))
+            }
+          </ul>
         </div>
 
 
