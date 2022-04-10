@@ -20,7 +20,6 @@ function* SignUpSaga(signUpAction: any): any {
   }
   const { response, error } = yield call(postRegister, userData);
   if (response) {
-    console.log(response)
     yield put(success("User created successfully"));
   } else {
     console.log(error.response.data)

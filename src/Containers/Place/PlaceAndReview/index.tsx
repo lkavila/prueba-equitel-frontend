@@ -3,20 +3,21 @@ import { connect, ConnectedProps } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import { Rating } from 'react-simple-star-rating'
-import Modal from "../../../components/Modal";
 import { makeSelectLoading, makeSelectReviews } from '../selectors';
-import { startChannel, createReview } from '../actions';
+import { startChannel, stopChannel, createReview } from '../actions';
 import { PlaceType, ReviewType } from '../../../globalTypes';
 import Spinner from '../../../components/Spinner';
 import Button from '../../../components/Button';
 import UpdatePlace from '../UpdatePlace';
 import ReviewComponent from '../../../components/Review';
+import Modal from "../../../components/Modal";
 
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   return {
     dispatch,
     handleGetReviews: (placeId: string, page: number) => dispatch(startChannel(placeId, page)),
+    handleStopChannel: () => dispatch(stopChannel()),
     handleCreateReview: (review: ReviewType) => dispatch(createReview(review)),
   };
 };
@@ -34,11 +35,12 @@ interface ViewPlaceProps {
   open: boolean;
   setOpen: (open: boolean) => void;
   place: PlaceType;
+  user: any;
 }
 
 type Props = ViewPlaceReduxProps & ViewPlaceProps;
 
-const Place = ({ handleCreateReview, handleGetReviews, reviews, loading, open, setOpen, place }: Props) => {
+const Place = ({ handleCreateReview, handleStopChannel, handleGetReviews, reviews, loading, open, setOpen, place, user }: Props) => {
 
   const [reviewComment, setReviewComment] = useState<string>('');
   const [rating, setRating] = useState(0) // initial rating value
@@ -47,10 +49,11 @@ const Place = ({ handleCreateReview, handleGetReviews, reviews, loading, open, s
 
   useEffect(() => {
     if (place) {
+      handleStopChannel();
       console.log("load more reviews")
       handleGetReviews(place._id || '', page);
     }
-  }, [place, handleGetReviews, page])
+  }, [place, handleGetReviews, handleStopChannel, page])
 
   const handleRating = (rate: number) => {
     setRating(rate);
@@ -84,13 +87,15 @@ const Place = ({ handleCreateReview, handleGetReviews, reviews, loading, open, s
               {place.description}
             </p>
           </div>
-
-          <div>
-            <div className="mb-4">
-              <Button className="bg-errorColor">Delete</Button>
-              <Button onClick={() => setOpenUpdatePlace(true)}>Update</Button>
+          {user && user.username === place.user.username ?
+            <div>
+              <div className="mb-4">
+                <Button className="bg-errorColor">Delete</Button>
+                <Button onClick={() => setOpenUpdatePlace(true)}>Update</Button>
+              </div>
             </div>
-          </div>
+            : <></>
+          }
 
 
         </div>
@@ -98,8 +103,12 @@ const Place = ({ handleCreateReview, handleGetReviews, reviews, loading, open, s
         <div>
           <form>
             <p>My review</p>
-            <Rating onClick={handleRating} ratingValue={rating} />
+            <p>
+              Rate this place:
+              <Rating onClick={handleRating} ratingValue={rating} />
+            </p>
             <label htmlFor="comment">
+              Leave an optional comment:
               <textarea id="comment" value={reviewComment}
                 onChange={(e) => setReviewComment(e.target.value)}
                 className="w-full" placeholder="Write your comments here" />
@@ -110,7 +119,7 @@ const Place = ({ handleCreateReview, handleGetReviews, reviews, loading, open, s
 
         <div className='mt-4'>
           <h3 className='text-xl font-semibold mb-4'>Reviews</h3>
-          <ul>
+          <ul className="overflow-y-auto max-h-48">
             {
               reviews.map((review, index) => (
                 <li key={(review._id || review.user.username) + index}>

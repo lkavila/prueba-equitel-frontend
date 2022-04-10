@@ -37,7 +37,6 @@ const placeReducer = (state = initialState, action: PlacesReducerActionsProps) =
         break;
       case placeActions.CREATE_REVIEW_SUCCESS:
         draft.error = '';
-        console.log("review: ", action.payload)
         break;
       case placeActions.LOADING:
         draft.loading = action.payload
