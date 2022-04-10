@@ -85,7 +85,7 @@ const Map: React.FC<MapProps> = ({ user, places, handleGetPlaces }) => {
           : <></>
         }
         {openViewPlace ?
-          <PlaceView open={openViewPlace} setOpen={setOpenViewPlace} place={place} />
+          <PlaceView open={openViewPlace} setOpen={setOpenViewPlace} place={place} user={user} />
           : <></>
         }
 
