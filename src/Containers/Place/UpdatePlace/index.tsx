@@ -59,6 +59,10 @@ const UpdatePlaceComponent = ({ handleUpdatePlace, handleGetPlacesTypes, placesT
         _id: place._id,
         name,
         description,
+        user: {
+          name: place.user.name,
+          username: place.user.username,
+        },
         typeName: selected,
         location: {
           type: 'Point',

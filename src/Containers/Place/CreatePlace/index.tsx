@@ -63,6 +63,10 @@ const CreatePlace = ({ handleCreatePlace, handleGetPlacesTypes, placesTypes, loa
         name,
         userId: 'id',
         description,
+        user: {
+          name: 'name',
+          username: 'username',
+        },
         typeName: selected,
         location: {
           type: "Point",

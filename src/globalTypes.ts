@@ -2,6 +2,10 @@ export interface UserType {
   name?: string;
   username: string;
   password?: string;
+  active?: boolean;
+  cretedAt?: string;
+  updatedAt?: string;
+  role?: string;
 }
 
 export interface PlaceTypesType {
@@ -12,7 +16,10 @@ export interface PlaceTypesType {
 export interface ReviewType {
   _id?: string;
   placeId?: string;
-  username: string;
+  user: {
+    _id: string;
+    username: string;
+  }
   comment?: string;
   rating: number;
   createdAt?: Date;
@@ -21,6 +28,7 @@ export interface PlaceType {
   _id?: string;
   name: string;
   description?: string;
+  user: UserType;
   userId?: string;
   typeName?: string;
   type?: PlaceTypesType;

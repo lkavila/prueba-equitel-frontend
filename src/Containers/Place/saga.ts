@@ -106,7 +106,6 @@ function* createReviewSaga(createReviewAction: any): any {
   const response = yield call(createReview, createReviewAction.payload, user.token);
 
   if (!response.error) {
-    console.log(response);
     yield put(createReviewSuccess(response.createdObject));
   } else {
     console.log(response.message);
@@ -145,7 +144,7 @@ const reconnect = (token: string) => {
 
 const createSocketChannel = (socket: any, payload: any) => eventChannel((emit) => {
   const handler = (data: { error?: boolean, message: string, reviews: ReviewType[] }) => {
-    console.log(data);
+    // console.log(data);
     emit(data);
   };
   const pagination = {
@@ -159,8 +158,6 @@ const createSocketChannel = (socket: any, payload: any) => eventChannel((emit) =
     socket.off('emitted:review:list', handler);
   };
 });
-
-// connection monitoring sagas
 
 const listenConnectSaga = function* (token: string) {
   while (true) {
@@ -180,14 +177,12 @@ const listenServerSaga = function* (getReviewsAction: any): any {
     if (timeout) {
       yield put(stopChannel());
     }
-    console.log("Connecting");
     const socket = yield call(connect, token);
     const socketChannel = yield call(createSocketChannel, socket, getReviewsAction.payload);
     yield fork(listenConnectSaga, token);
 
     while (true) {
       const payload = yield take(socketChannel);
-      console.log("recive emitted 4 reviews");
       yield put(getReviewsSuccess(payload.reviews));
     }
   } catch (error) {

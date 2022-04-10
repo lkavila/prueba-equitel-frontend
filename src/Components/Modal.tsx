@@ -8,7 +8,7 @@ interface ModalProps {
   className?: string;
 }
 
-const Modal = ({ open, setOpen, children }: ModalProps) => {
+const Modal = ({ className = "w-8/12", open, setOpen, children }: ModalProps) => {
   const cancelButtonRef = useRef(null)
 
   return (
@@ -41,7 +41,7 @@ const Modal = ({ open, setOpen, children }: ModalProps) => {
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <div className="bg-gray-50 rounded-lg overflow-hidden shadow-xl transform transition-all flex max-w-xl w-7/12">
+              <div className={`bg-gray-50 rounded-lg overflow-hidden shadow-xl transform transition-all flex max-w-xl ${className}`}>
                 <div className="bg-gray-50 px-4 pt-5 pb-4 min-w-full">
                   {children}
                 </div>
